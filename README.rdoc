@@ -1,0 +1,66 @@
+= DESCRIPTION:
+
+Installs and configures mysql for client or server.
+
+= REQUIREMENTS:
+
+This recipe has been tested on Debian 5, Debian 6 and Ubuntu 12.
+
+= ATTRIBUTES:
+
+* xen[:network_script] - Set the script to initialize the dom0 network.
+* xen[:vif_script] - Sets the script to initialize the domU network interface.
+* xen[:dom0_min_mem] - The lowest permissible memory level (in MB) for dom0
+
+Xen tool options
+* xen[:xen_tools][:directory] - New instances will be stored in subdirectories named after their hostnames.
+* xen[:xen_tools][:volume_group] - New instances will be stored in the LVM volume group
+* xen[:xen_tools][:distribution] - Default distro to install
+* xen[:xen_tools][:memory] - Memory size
+* xen[:xen_tools][:swap] - Swap size
+* xen[:xen_tools][:disk_size] - Disk size
+* xen[:xen_tools][:gateway] - Network gateway address
+* xen[:xen_tools][:netmask] - Network netmask address
+* xen[:xen_tools][:broadcast] - Network broadcast address
+* xen[:xen_tools][:passwd] - Option to interactively setup a new root password for images.
+* xen[:xen_tools][:kernel] - Default kernel to use for the virtual servers
+* xen[:xen_tools][:initrd] - Default ramdisk to use for the virtual servers
+* xen[:xen_tools][:mirror] - The default mirror for debootstrap to install Debian-derived distributions
+
+= USAGE:
+
+With Chef Solo
+
+1. Create a file called node.js. with the following contents:
+
+  // node.js
+  {
+    "run_list": ["recipe[xen]","recipe[xen::xen_tools]"]
+  }
+
+2. Run Chef:
+
+  chef-solo -j node.js
+
+3. Reboot the server and select the Xen enhanced boot option.
+
+4. Create a new VM:
+
+  xen-create-image --host=myserver.mydomain.org --ip 192.168.0.2
+
+With Chef Server with Knife
+
+1. Upload the cookbook:
+
+  knife cookbook upload xen
+
+2. Add the recipe to your node:
+
+  knife node run_list add myserver.mydomain.org xen
+  
+3. Run Chef:
+
+  chef-client
+
+
+  
